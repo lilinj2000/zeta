@@ -40,8 +40,8 @@ void Server::onReceiveMarketData(
 }
 
 air::SpeedMData* Server::toSpeedMData(const std::string& instru,
-                                          const std::string& update_time,
-                                          int update_millisec) {
+                                      const std::string& update_time,
+                                      int update_millisec) {
   std::unique_ptr<air::SpeedMData> speed_data(new air::SpeedMData());
 
   speed_data->instru = instru;
