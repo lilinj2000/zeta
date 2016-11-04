@@ -21,6 +21,8 @@ Options::Options():
        "instrument")
       ("zeta.speed_file", po::value<std::string>(&speed_file),
        "speed file")
+      ("zeta.md_file", po::value<std::string>(&md_file),
+       "md file")
       ("zeta.log_cfg", po::value<std::string>(&log_cfg),
          "log config file");
   return;

@@ -30,9 +30,12 @@ class Server : public zebra::ServiceCallback {
                                 const std::string& update_time,
                                 int update_millisec);
 
+  air::ShfeMData* toShfeMData(const ftdc::MarketDataField* md);
+
  private:
   std::unique_ptr<Config> config_;
   std::unique_ptr<air::MDataFile> speed_file_;
+  std::unique_ptr<air::MDataFile> md_file_;
 
   std::unique_ptr<zebra::Service> zebra_service_;
 };

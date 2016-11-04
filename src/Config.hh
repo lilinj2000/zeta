@@ -23,6 +23,7 @@ class Options : public soil::Options {
 
   std::string instrus_filter;
   std::string speed_file;
+  std::string md_file;
   std::string log_cfg;
 
  private:
