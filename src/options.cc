@@ -34,7 +34,7 @@ Options::Options(const rapidjson::Document& doc) {
   
   get_item_value(&instrus_filter, doc, "/zeta/instrus_filter");
   get_item_value(&speed_file, doc, "/zeta/speed_file");
-  get_item_value(&md_file, doc, "/zeta/md_file");
+  get_item_value(&md_file, doc, "/zeta/md_file", false);
   
   return;
 }

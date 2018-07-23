@@ -1,0 +1,40 @@
+{
+    "log": {
+        "level": "trace", 
+        "sinks": [
+            {
+                "sink": {
+                    "level": "trace", 
+                    "type": "stdout_sink_mt"
+                }
+            }, 
+            {
+                "sink": {
+                    "file_name": "zeta.log", 
+                    "level": "info", 
+                    "max_file_size": 5000000, 
+                    "max_files": 10, 
+                    "type": "rotating_file_sink_mt"
+                }
+            }
+        ]
+    }, 
+    "spy": {
+        "device": "eth0", 
+        "filter": "udp port 12345", 
+        "nonblock": 1, 
+        "promisc": 0, 
+        "snaplen": 65535, 
+        "timeout": 0
+    }, 
+    "zebra": {
+        "optimization": false, 
+        "packet_type": 1, 
+        "pcap_file": "", 
+        "queue_size": 2097152
+    }, 
+    "zeta": {
+        "instrus_filter": "cu1809", 
+        "speed_file": "cu_speed.data"
+    }
+}

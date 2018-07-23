@@ -32,7 +32,7 @@ noinst_HEADERS = options.h \
 	m_datafile.h \
 	server.h
 
-EXTRA_DIST = env.sh
+EXTRA_DIST = env.sh zeta.json
 
 zetadir = $(bindir)
 zeta_DATA = $(EXTRA_DIST)
