@@ -96,12 +96,12 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(zetadir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_zeta_OBJECTS = zeta-Config.$(OBJEXT) zeta-Server.$(OBJEXT) \
-	zeta-Main.$(OBJEXT)
+am_zeta_OBJECTS = zeta-options.$(OBJEXT) zeta-m_datafile.$(OBJEXT) \
+	zeta-server.$(OBJEXT) zeta-main.$(OBJEXT)
 zeta_OBJECTS = $(am_zeta_OBJECTS)
 am__DEPENDENCIES_1 =
 zeta_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -200,12 +200,11 @@ ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
-AIR_CPPFLAGS = @AIR_CPPFLAGS@
-AIR_HOME = @AIR_HOME@
-AIR_LIBADD = @AIR_LIBADD@
 AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
+ARGS_CPPFLAGS = @ARGS_CPPFLAGS@
+ARGS_HOME = @ARGS_HOME@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
@@ -234,6 +233,9 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+FMT_CPPFLAGS = @FMT_CPPFLAGS@
+FMT_HOME = @FMT_HOME@
+FMT_LIBADD = @FMT_LIBADD@
 GREP = @GREP@
 HAVE_CXX11 = @HAVE_CXX11@
 INSTALL = @INSTALL@
@@ -271,12 +273,18 @@ PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 RANLIB = @RANLIB@
+RAPIDJSON_CPPFLAGS = @RAPIDJSON_CPPFLAGS@
+RAPIDJSON_HOME = @RAPIDJSON_HOME@
+READERWRITERQUEUE_CPPFLAGS = @READERWRITERQUEUE_CPPFLAGS@
+READERWRITERQUEUE_HOME = @READERWRITERQUEUE_HOME@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 SOIL_CPPFLAGS = @SOIL_CPPFLAGS@
 SOIL_HOME = @SOIL_HOME@
 SOIL_LIBADD = @SOIL_LIBADD@
+SPDLOG_CPPFLAGS = @SPDLOG_CPPFLAGS@
+SPDLOG_HOME = @SPDLOG_HOME@
 SPY_CPPFLAGS = @SPY_CPPFLAGS@
 SPY_HOME = @SPY_HOME@
 SPY_LIBADD = @SPY_LIBADD@
@@ -310,6 +318,8 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+home_3rd = @home_3rd@
+home_libs = @home_libs@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -340,31 +350,35 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 zeta_SOURCES = \
-	Config.cc \
-	Server.cc \
-	Main.cc
+	options.cc \
+	m_datafile.cc \
+	server.cc \
+	main.cc
 
-zeta_CPPFLAGS = \
+zeta_CPPFLAGS = -I$(top_srcdir) \
 		$(BOOST_CPPFLAGS) \
 		$(SOIL_CPPFLAGS) \
 		$(SPY_CPPFLAGS) \
-		$(ZEBRA_CPPFLAGS) \
-		$(AIR_CPPFLAGS)
+		$(RAPIDJSON_CPPFLAGS) \
+		$(FMT_CPPFLAGS) \
+		$(SPDLOG_CPPFLAGS) \
+		$(READERWRITERQUEUE_CPPFLAGS) \
+		$(ARGS_CPPFLAGS) \
+		$(ZEBRA_CPPFLAGS)
 
 zeta_LDADD = \
 	$(BOOST_LIBADD) \
 	$(SOIL_LIBADD) \
-	$(AIR_LIBADD) \
 	$(ZEBRA_LIBADD)
 
 zeta_LDFLAGS = $(LIBADD_DL) -Wl,--no-as-needed -pthread
 
 # header files
-noinst_HEADERS = Config.hh \
-	Log.hh \
-	Server.hh
+noinst_HEADERS = options.h \
+	m_datafile.h \
+	server.h
 
-EXTRA_DIST = env.sh zeta.cfg log.cfg
+EXTRA_DIST = env.sh
 zetadir = $(bindir)
 zeta_DATA = $(EXTRA_DIST)
 all: all-am
@@ -461,9 +475,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/zeta-Config.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/zeta-Main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/zeta-Server.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/zeta-m_datafile.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/zeta-main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/zeta-options.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/zeta-server.Po@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -486,47 +501,61 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
-zeta-Config.o: Config.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-Config.o -MD -MP -MF $(DEPDIR)/zeta-Config.Tpo -c -o zeta-Config.o `test -f 'Config.cc' || echo '$(srcdir)/'`Config.cc
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-Config.Tpo $(DEPDIR)/zeta-Config.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Config.cc' object='zeta-Config.o' libtool=no @AMDEPBACKSLASH@
+zeta-options.o: options.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-options.o -MD -MP -MF $(DEPDIR)/zeta-options.Tpo -c -o zeta-options.o `test -f 'options.cc' || echo '$(srcdir)/'`options.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-options.Tpo $(DEPDIR)/zeta-options.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='options.cc' object='zeta-options.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-Config.o `test -f 'Config.cc' || echo '$(srcdir)/'`Config.cc
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-options.o `test -f 'options.cc' || echo '$(srcdir)/'`options.cc
 
-zeta-Config.obj: Config.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-Config.obj -MD -MP -MF $(DEPDIR)/zeta-Config.Tpo -c -o zeta-Config.obj `if test -f 'Config.cc'; then $(CYGPATH_W) 'Config.cc'; else $(CYGPATH_W) '$(srcdir)/Config.cc'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-Config.Tpo $(DEPDIR)/zeta-Config.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Config.cc' object='zeta-Config.obj' libtool=no @AMDEPBACKSLASH@
+zeta-options.obj: options.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-options.obj -MD -MP -MF $(DEPDIR)/zeta-options.Tpo -c -o zeta-options.obj `if test -f 'options.cc'; then $(CYGPATH_W) 'options.cc'; else $(CYGPATH_W) '$(srcdir)/options.cc'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-options.Tpo $(DEPDIR)/zeta-options.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='options.cc' object='zeta-options.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-Config.obj `if test -f 'Config.cc'; then $(CYGPATH_W) 'Config.cc'; else $(CYGPATH_W) '$(srcdir)/Config.cc'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-options.obj `if test -f 'options.cc'; then $(CYGPATH_W) 'options.cc'; else $(CYGPATH_W) '$(srcdir)/options.cc'; fi`
 
-zeta-Server.o: Server.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-Server.o -MD -MP -MF $(DEPDIR)/zeta-Server.Tpo -c -o zeta-Server.o `test -f 'Server.cc' || echo '$(srcdir)/'`Server.cc
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-Server.Tpo $(DEPDIR)/zeta-Server.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Server.cc' object='zeta-Server.o' libtool=no @AMDEPBACKSLASH@
+zeta-m_datafile.o: m_datafile.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-m_datafile.o -MD -MP -MF $(DEPDIR)/zeta-m_datafile.Tpo -c -o zeta-m_datafile.o `test -f 'm_datafile.cc' || echo '$(srcdir)/'`m_datafile.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-m_datafile.Tpo $(DEPDIR)/zeta-m_datafile.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='m_datafile.cc' object='zeta-m_datafile.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-Server.o `test -f 'Server.cc' || echo '$(srcdir)/'`Server.cc
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-m_datafile.o `test -f 'm_datafile.cc' || echo '$(srcdir)/'`m_datafile.cc
 
-zeta-Server.obj: Server.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-Server.obj -MD -MP -MF $(DEPDIR)/zeta-Server.Tpo -c -o zeta-Server.obj `if test -f 'Server.cc'; then $(CYGPATH_W) 'Server.cc'; else $(CYGPATH_W) '$(srcdir)/Server.cc'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-Server.Tpo $(DEPDIR)/zeta-Server.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Server.cc' object='zeta-Server.obj' libtool=no @AMDEPBACKSLASH@
+zeta-m_datafile.obj: m_datafile.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-m_datafile.obj -MD -MP -MF $(DEPDIR)/zeta-m_datafile.Tpo -c -o zeta-m_datafile.obj `if test -f 'm_datafile.cc'; then $(CYGPATH_W) 'm_datafile.cc'; else $(CYGPATH_W) '$(srcdir)/m_datafile.cc'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-m_datafile.Tpo $(DEPDIR)/zeta-m_datafile.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='m_datafile.cc' object='zeta-m_datafile.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-Server.obj `if test -f 'Server.cc'; then $(CYGPATH_W) 'Server.cc'; else $(CYGPATH_W) '$(srcdir)/Server.cc'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-m_datafile.obj `if test -f 'm_datafile.cc'; then $(CYGPATH_W) 'm_datafile.cc'; else $(CYGPATH_W) '$(srcdir)/m_datafile.cc'; fi`
 
-zeta-Main.o: Main.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-Main.o -MD -MP -MF $(DEPDIR)/zeta-Main.Tpo -c -o zeta-Main.o `test -f 'Main.cc' || echo '$(srcdir)/'`Main.cc
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-Main.Tpo $(DEPDIR)/zeta-Main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Main.cc' object='zeta-Main.o' libtool=no @AMDEPBACKSLASH@
+zeta-server.o: server.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-server.o -MD -MP -MF $(DEPDIR)/zeta-server.Tpo -c -o zeta-server.o `test -f 'server.cc' || echo '$(srcdir)/'`server.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-server.Tpo $(DEPDIR)/zeta-server.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='server.cc' object='zeta-server.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-Main.o `test -f 'Main.cc' || echo '$(srcdir)/'`Main.cc
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-server.o `test -f 'server.cc' || echo '$(srcdir)/'`server.cc
 
-zeta-Main.obj: Main.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-Main.obj -MD -MP -MF $(DEPDIR)/zeta-Main.Tpo -c -o zeta-Main.obj `if test -f 'Main.cc'; then $(CYGPATH_W) 'Main.cc'; else $(CYGPATH_W) '$(srcdir)/Main.cc'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-Main.Tpo $(DEPDIR)/zeta-Main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Main.cc' object='zeta-Main.obj' libtool=no @AMDEPBACKSLASH@
+zeta-server.obj: server.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-server.obj -MD -MP -MF $(DEPDIR)/zeta-server.Tpo -c -o zeta-server.obj `if test -f 'server.cc'; then $(CYGPATH_W) 'server.cc'; else $(CYGPATH_W) '$(srcdir)/server.cc'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-server.Tpo $(DEPDIR)/zeta-server.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='server.cc' object='zeta-server.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-Main.obj `if test -f 'Main.cc'; then $(CYGPATH_W) 'Main.cc'; else $(CYGPATH_W) '$(srcdir)/Main.cc'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-server.obj `if test -f 'server.cc'; then $(CYGPATH_W) 'server.cc'; else $(CYGPATH_W) '$(srcdir)/server.cc'; fi`
+
+zeta-main.o: main.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-main.o -MD -MP -MF $(DEPDIR)/zeta-main.Tpo -c -o zeta-main.o `test -f 'main.cc' || echo '$(srcdir)/'`main.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-main.Tpo $(DEPDIR)/zeta-main.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main.cc' object='zeta-main.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-main.o `test -f 'main.cc' || echo '$(srcdir)/'`main.cc
+
+zeta-main.obj: main.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT zeta-main.obj -MD -MP -MF $(DEPDIR)/zeta-main.Tpo -c -o zeta-main.obj `if test -f 'main.cc'; then $(CYGPATH_W) 'main.cc'; else $(CYGPATH_W) '$(srcdir)/main.cc'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/zeta-main.Tpo $(DEPDIR)/zeta-main.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main.cc' object='zeta-main.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(zeta_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o zeta-main.obj `if test -f 'main.cc'; then $(CYGPATH_W) 'main.cc'; else $(CYGPATH_W) '$(srcdir)/main.cc'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
