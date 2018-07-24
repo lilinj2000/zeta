@@ -13,7 +13,7 @@ sink1 = {
 sink2 = {
     "sink": {
         "type": "rotating_file_sink_mt",
-        "level": "info",
+        "level": "trace",
         "file_name": "zeta.log",
         "max_file_size": 5000000,
         "max_files": 10
@@ -26,15 +26,15 @@ log = {
     }
 
 zeta = {
-        "instrus_filter": "cu1809",
-        "speed_file": "cu_speed.data"
+        "instrus_filter": "",
+        "speed_file": "zeta_speed.data"
     }
 
 zebra = {
         "queue_size": 2097152, 
-        "packet_type": 1,
+        "packet_type": 2,
         "optimization": False,
-        "pcap_file": ""
+        "pcap_file": "x10_20180724_001.pcap"
     }
 
 spy = {

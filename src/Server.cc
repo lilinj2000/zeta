@@ -24,7 +24,7 @@
 //
 //
 
-#include "server.h"
+#include "src/server.h"
 #include "soil/log.h"
 
 namespace zeta {
@@ -86,7 +86,10 @@ std::shared_ptr<SpeedMData> Server::toSpeedMData(
   speed_data->update_time = update_time;
   speed_data->update_millisec = update_millisec;
 
-  speed_data->time_stamp = soil::DateTime(std::chrono::system_clock::from_time_t(ts.tv_sec));
+  speed_data->time_stamp
+    = soil::DateTime(
+        std::chrono::system_clock::from_time_t(
+          ts.tv_sec));
   speed_data->time_stamp += std::chrono::microseconds(ts.tv_usec);
 
   return speed_data;

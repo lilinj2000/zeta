@@ -11,7 +11,7 @@
             {
                 "sink": {
                     "file_name": "zeta.log", 
-                    "level": "info", 
+                    "level": "trace", 
                     "max_file_size": 5000000, 
                     "max_files": 10, 
                     "type": "rotating_file_sink_mt"
@@ -29,12 +29,12 @@
     }, 
     "zebra": {
         "optimization": false, 
-        "packet_type": 1, 
-        "pcap_file": "", 
+        "packet_type": 5, 
+        "pcap_file": "x10_20180724_001.pcap", 
         "queue_size": 2097152
     }, 
     "zeta": {
-        "instrus_filter": "cu1809", 
-        "speed_file": "cu_speed.data"
+        "instrus_filter": "", 
+        "speed_file": "zeta_speed.data"
     }
 }
