@@ -66,7 +66,8 @@ void Server::onReceiveMarketData(
     speed_file_->putData(
         toSpeedMData(md->updatetime_field.InstrumentID,
                      md->updatetime_field.UpdateTime,
-                     md->updatetime_field.UpdateMillisec));
+                     md->updatetime_field.UpdateMillisec,
+                     ts));
   }
 
 //   if (md_file_.get()) {
@@ -77,12 +78,16 @@ void Server::onReceiveMarketData(
 std::shared_ptr<SpeedMData> Server::toSpeedMData(
   const std::string& instru,
   const std::string& update_time,
-  int update_millisec) {
+  int update_millisec,
+  const struct timeval& ts) {
   std::shared_ptr<SpeedMData> speed_data(new SpeedMData());
 
   speed_data->instru = instru;
   speed_data->update_time = update_time;
   speed_data->update_millisec = update_millisec;
+
+  speed_data->time_stamp = soil::DateTime(std::chrono::system_clock::from_time_t(ts.tv_sec));
+  speed_data->time_stamp += std::chrono::microseconds(ts.tv_usec);
 
   return speed_data;
 }

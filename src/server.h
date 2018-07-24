@@ -54,7 +54,8 @@ class Server : public zebra::ServiceCallback {
   std::shared_ptr<SpeedMData> toSpeedMData(
     const std::string& instru,
     const std::string& update_time,
-    int update_millisec);
+    int update_millisec,
+    const struct timeval&);
 
   // ShfeMData* toShfeMData(const ftdc::MarketDataField* md);
 
