@@ -34,7 +34,7 @@
         "queue_size": 2097152
     }, 
     "zeta": {
-        "instrus_filter": "", 
+        "instrus_filter": "cu1809", 
         "speed_file": "zeta_speed.data"
     }
 }

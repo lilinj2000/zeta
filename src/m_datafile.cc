@@ -41,7 +41,8 @@ void SpeedMData::writeToFile(std::ofstream* os) const {
 
   std::chrono::system_clock::duration delay = time_stamp - start_time;
 
-  (*os) <<update_time <<"." <<std::setfill('0') <<std::setw(3)
+  (*os) <<instru <<"\t"
+        <<update_time <<"." <<std::setfill('0') <<std::setw(3)
         <<update_millisec <<"\t"
         <<start_time <<"\t"
         <<time_stamp <<"\t"
@@ -61,11 +62,13 @@ MDataFile::~MDataFile() {
   SOIL_FUNC_TRACE;
 }
 
-bool MDataFile::filterData(const soil::Data* data) {
+bool MDataFile::filterData(std::shared_ptr<soil::Data> data) {
   SOIL_FUNC_TRACE;
 
   const MData* mdata
-      = dynamic_cast<const MData*>(data);
+      = dynamic_cast<const MData*>(data.get());
+
+  // SOIL_DEBUG_PRINT(instrus_filter_.size());
 
   if (instrus_filter_.empty()
       || instrus_filter_.count(

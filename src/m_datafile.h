@@ -102,7 +102,7 @@ class MDataFile : public soil::DataFile {
   virtual ~MDataFile();
 
  protected:
-  virtual bool filterData(const soil::Data* data);
+  virtual bool filterData(std::shared_ptr<soil::Data> data);
 
  private:
   InstrusFilter instrus_filter_;
